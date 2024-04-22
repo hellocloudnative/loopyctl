@@ -25,5 +25,5 @@ var resetCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(resetCmd)
-	setupCmd.Flags().BoolVar(&master.Single, "single", false, "Run in single mode")
+	resetCmd.Flags().BoolVar(&master.Single, "single", false, "Run in single mode")
 }

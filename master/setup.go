@@ -15,7 +15,6 @@ func RunSetup() error {
 	}
 	logger.Info("loopy kubernetes Setup completed successfully")
 
-	// 执行初始化脚本
 	if err := runCommand("sh", "kylin-loopy/init.sh"); err != nil {
 		return err
 	}
