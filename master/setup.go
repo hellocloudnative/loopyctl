@@ -2,20 +2,18 @@ package master
 
 import (
 	"loopyctl/pkg/logger"
-	"os/exec"
-	"strings"
 )
 
 func RunSetup() error {
 	if err := runCommand("cp", "kylin-loopy/sealos", "/usr/bin/"); err != nil {
 		return err
 	}
-	logger.Info("Sealos installed successfully")
+	logger.Info("Installtools installed successfully")
 
 	if err := runCommand("sealos", "run", "registry.cn-shanghai.aliyuncs.com/labring/kubernetes:v1.27.7", "registry.cn-shanghai.aliyuncs.com/labring/helm:v3.9.4", "labring/kube-ovn:v1.11.5", "--single"); err != nil {
 		return err
 	}
-	logger.Info("Setup completed successfully")
+	logger.Info("loopy kubernetes Setup completed successfully")
 
 	// 执行初始化脚本
 	if err := runCommand("sh", "kylin-loopy/init.sh"); err != nil {
@@ -73,22 +71,4 @@ func RunSetup() error {
 
 	logger.Info("Loopy Setup completed.")
 	return nil
-}
-
-func runCommand(name string, args ...string) error {
-	cmd := exec.Command(name, args...)
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		logger.Error("Command `%s %s` failed with error: %v, output: %s\n", name, strings.Join(args, " "), err, output)
-		return err
-	}
-	return nil
-}
-
-func kubectlApply(file string) error {
-	return runCommand("kubectl", "apply", "-f", file)
-}
-
-func kubectlCreate(file string) error {
-	return runCommand("kubectl", "create", "-f", file)
 }
